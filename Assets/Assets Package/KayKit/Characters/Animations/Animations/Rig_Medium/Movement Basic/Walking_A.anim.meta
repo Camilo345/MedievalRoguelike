@@ -8,8 +8,9 @@ NativeFormatImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
-  productId: 290681
-  packageName: KayKit - Free Sample Pack (for Unity)
+  productId: 290680
+  packageName: KayKit - Skeletons Character Pack (for Unity)
   packageVersion: 1.1.1
-  assetPath: Assets/KayKit/Characters/Animations/Animations/Rig_Medium/Movement Basic/Walking_A.anim
-  uploadId: 832008
+  assetPath: Assets/Assets Package/KayKit/Characters/Animations/Animations/Rig_Medium/Movement
+    Basic/Walking_A.anim
+  uploadId: 832000
