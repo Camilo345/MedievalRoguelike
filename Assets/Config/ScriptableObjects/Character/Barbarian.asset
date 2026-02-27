@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Barbarian
   health: 100
-  shield: 50
-  damage: 50
+  shield: 30
+  damage: 60
+  Cooldown: 1

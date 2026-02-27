@@ -5,7 +5,10 @@ using UnityEngine.InputSystem;
 public class CharacterAnimationsController : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private Character player;
     [SerializeField] private CharacterInputs characterInputs;
+    [SerializeField] private CharacterAttack characterAttack;
+    [SerializeField] private PlayerDamageController characterDamageController;
 
     private string HIT_PARAMETER = "Hit";
     private string RUN_PARAMETER = "Run";
@@ -16,7 +19,9 @@ public class CharacterAnimationsController : MonoBehaviour
     private void OnEnable()
     {
         characterInputs.OnMove += MovePlayer;
-        characterInputs.OnAttack += AttackAnimation;
+        characterAttack.OnAttack += AttackAnimation;
+        characterDamageController.OnDamage += HitAnimation;
+        player.OnPlayerDead += DieAnimation;
     }
 
     private void MovePlayer(Vector2 moveVector)
@@ -34,7 +39,7 @@ public class CharacterAnimationsController : MonoBehaviour
         animator.SetTrigger(ATTACK_PARAMETER);
     }
 
-    public void HitAnimation()
+    public void HitAnimation(int damage)
     {
         animator.SetTrigger(HIT_PARAMETER);
     }

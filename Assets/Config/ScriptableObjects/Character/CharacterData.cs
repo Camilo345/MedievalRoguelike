@@ -4,7 +4,8 @@ using UnityEngine;
 public class CharacterData : ScriptableObject
 {
     public string characterName;
-    public int health;
-    public int shield;
-    public int damage;
+    [Range(0, 100)] public int health;
+    [Range(0, 100)] public int shield;
+    [Range(0, 100)] public int damage;
+    [Range(0, 5)] public float Cooldown;
 }

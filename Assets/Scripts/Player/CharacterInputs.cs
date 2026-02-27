@@ -9,7 +9,7 @@ public class CharacterInputs : MonoBehaviour
 
     public Action<Vector2> OnMove;
     public Action OnAttack;
-
+    public Action OnDash;
     private void Awake()
     {
         _playerInputs = new PlayerInputs();
@@ -21,6 +21,12 @@ public class CharacterInputs : MonoBehaviour
         _playerInputs.CharacterController.Move.performed += MovePlayer;
         _playerInputs.CharacterController.Move.canceled += MovePlayerCanceled;
         _playerInputs.CharacterController.Attack.started += PlayerAttack;
+        _playerInputs.CharacterController.Dash.performed += PlayerDash;
+    }
+
+    private void PlayerDash(InputAction.CallbackContext context)
+    {
+        OnDash?.Invoke();
     }
 
     private void PlayerAttack(InputAction.CallbackContext context)

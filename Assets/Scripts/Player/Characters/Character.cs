@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -7,42 +8,62 @@ public  class Character : MonoBehaviour
     [SerializeField] private CharacterInputs input; 
     [SerializeField] private CharacterData data;
     [SerializeField] private CharacterAttack attack;
+    [SerializeField] private CharacterMovement movement;
+    [SerializeField] private PlayerDamageController damageController;
 
     [Header("Character Data")]
     private int _currentHealth =0;
-    private int _shield = 0;
+    private int _defense = 0;
     private int _damage = 0;
+    private float _coolDown = 0;
 
     [Header("Character Data Get/Set")]
-    public int CurrentHealth { get => _currentHealth; set => _currentHealth += value; }
-    public int Shield { get => _shield; set => _shield += value; }
-    public int Damage { get => _damage; set => _damage += value; }
+    public int CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
+    public int Defense { get => _defense; set => _defense = value; }
+    public int Damage { get => _damage; set => _damage = value; }
+    public float CoolDown { get => _coolDown; set => _coolDown = value; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Action OnPlayerDead;
+
     void Start()
     {
         CurrentHealth = data.health;
-        Shield = data.shield;
+        Defense = data.shield;
         Damage = data.damage;
+        CoolDown = data.Cooldown;
+        attack.Initialize(this);
 
         input.OnAttack += Attack;
+        damageController.OnDamage += ApplyDamage;
     }
     
     public void Attack()
     {
-        attack.Execute(Damage);
+        attack.Execute();
     }
 
-    public bool ApplyDamage(int damage)
+    public void ApplyDamage(int damage)
     {
-        int realDamage = math.abs(Shield - damage);
+        float k = 50f;
+        int realDamage = (int)((damage * k) / (k + Defense));
         CurrentHealth -= realDamage;
+        Debug.Log(damage + " - " + Defense + " - " + realDamage + " - " + CurrentHealth);
         if (CurrentHealth > 0)
         {
-            return false;
+            return;
         }
-
+        Debug.Log("El jugador Murio");
         CurrentHealth = 0;
-        return true;
+        movement.AddBlock(MovementBlockReason.Dead);
+        OnPlayerDead?.Invoke();
     }
+}
+[Flags]
+public enum MovementBlockReason
+{
+    None = 0,
+    Attack = 1,
+    Dead = 2,
+    Stunned = 4,
+    Dialogue = 8
 }
